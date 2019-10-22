@@ -1,0 +1,10 @@
+node_modules
+.codeclimate.yml
+.editorconfig
+.eslintrc.json
+.nowignore
+.prettierrc
+.travis.yml
+desktop.ini
+liscence
+now.json # removing support for `now` as we won't be using it

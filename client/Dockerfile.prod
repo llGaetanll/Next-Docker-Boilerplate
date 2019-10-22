@@ -1,0 +1,17 @@
+FROM node:10
+# TODO: figure out what image is best for the build
+
+# set workdir so that all paths moving forward are related to it
+WORKDIR /usr/src/app
+
+# since we have a .dockerignore, we won't be copying things like node_modules and other files not necessary to the build
+COPY . .
+
+# install deps
+RUN npm install
+
+# build app
+RUN npm run build
+
+# run production build
+CMD ["npm", "start"]

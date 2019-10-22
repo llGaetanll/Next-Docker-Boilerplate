@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: ./Dockerfile
+      args:
+        PORT: ${CLIENT_EXPOSED_PORT}
+    volumes:
+      - ./client:/usr/src/app
+      - /usr/src/app/node_modules
+      # - .env:/home/node/app/.env # pass in environment variables so we can acces the domain name and ports for making requests across different containers
+    ports:
+      - ${CLIENT_EXPOSED_PORT}:${CLIENT_EXPOSED_PORT}
+    # depends_on:
+    #   - container1
+  # container1:
+  #   build:
+  #     context: ./container1
+  #     dockerfile: ./Dockerfile
+  #   volumes: # me:container
+  #     - ./container1:./container1
+  #   ports:
+  #     - ${CONTAINER1_EXPOSED_PORT}:3000
+  # container2:
+  #   build:
+  #     context: ./container2
+  #     dockerfile: ./Dockerfile
+  #   volumes: # me:container
+  #     - ./container2:./container2
+  #   ports:
+  #     - ${CONTAINER2_EXPOSED_PORT}:3000
+volumes:
+  client:
