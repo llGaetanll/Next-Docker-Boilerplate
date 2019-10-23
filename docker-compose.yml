@@ -11,18 +11,22 @@ services:
       - ./client:/usr/src/app
       - /usr/src/app/node_modules
       # - .env:/home/node/app/.env # pass in environment variables so we can acces the domain name and ports for making requests across different containers
+    env_file:
+      - .env
     ports:
       - ${CLIENT_EXPOSED_PORT}:${CLIENT_EXPOSED_PORT}
     # depends_on:
     #   - container1
-  # container1:
-  #   build:
-  #     context: ./container1
-  #     dockerfile: ./Dockerfile
-  #   volumes: # me:container
-  #     - ./container1:./container1
-  #   ports:
-  #     - ${CONTAINER1_EXPOSED_PORT}:3000
+  container1:
+    build:
+      context: ./container1
+      dockerfile: ./Dockerfile
+    volumes: # me:container
+      - ./container1:/usr/src/app
+    ports:
+      - ${CONTAINER1_EXPOSED_PORT}:3000
+    env_file:
+      - .env
   # container2:
   #   build:
   #     context: ./container2

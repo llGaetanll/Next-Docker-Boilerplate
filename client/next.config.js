@@ -42,5 +42,10 @@ module.exports = {
 			aggregateTimeout: 300 // delay before rebuilding
 		}
 		return config
+	},
+	env: {
+		DOMAIN: process.env.DOMAIN,
+		CONTAINER1_EXPOSED_PORT: process.env.CONTAINER1_EXPOSED_PORT,
+		CONTAINER2_EXPOSED_PORT: process.env.CONTAINER2_EXPOSED_PORT
 	}
 }
