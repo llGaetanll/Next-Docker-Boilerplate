@@ -6,5 +6,3 @@ client/.next
 client/out
 client/*-error.log
 client/yarn.lock
-
-.env
