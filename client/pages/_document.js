@@ -2,6 +2,8 @@ import React from 'react'
 import Document, { Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheets } from '@material-ui/styles'
 
+const height = { height: '100vh' }
+
 class MyDocument extends Document {
 	render() {
 		return (
@@ -11,7 +13,7 @@ class MyDocument extends Document {
 						name="viewport"
 						content="width=device-width, initial-scale=1.0"
 					/>
-					<meta name="theme-color" content="#673ab7" />
+					{/* <meta name="theme-color" content="#673ab7" /> */}
 					<meta
 						name="Description"
 						content="an example of NextJS app with 100% accessible lighthouse score"
@@ -22,8 +24,14 @@ class MyDocument extends Document {
 						rel="stylesheet"
 						href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
 					/>
+					<style>{`
+						#__next {
+							height: 100vh;
+							display: flex;
+						}
+					`}</style>
 				</Head>
-				<body>
+				<body style={height}>
 					<Main />
 					<NextScript />
 				</body>

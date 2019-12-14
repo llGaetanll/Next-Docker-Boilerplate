@@ -1,26 +1,56 @@
 import 'isomorphic-fetch'
-import React from 'react'
-import Fork from '../components/Fork'
-import Todo from '../components/Todo'
-import FetchButton from '../components/FetchButton'
+import React, { useContext, useEffect } from 'react'
+import Link from 'next/link'
+import { Box, Typography, Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
 
-const Index = ({ stars }) => (
-	<React.Fragment>
-		<Fork stars={stars} />
-		<Todo />
-		<FetchButton />
-	</React.Fragment>
-)
+import { Context } from '../util/context'
+import { useGetLocalStorage, useSetLocalStorage } from '../util/util'
 
-Index.getInitialProps = async () => {
-	const res = await fetch(
-		'https://api.github.com/repos/ooade/NextSimpleStarter'
-	)
-	const json = await res.json()
+const useStyles = makeStyles(theme => ({
+	root: {
+		display: 'flex',
+		flex: 1,
+		flexDirection: 'column',
 
-	return {
-		stars: json.stargazers_count
+		marginRight: theme.spacing(6),
+		marginLeft: theme.spacing(6)
 	}
+}))
+
+const Index = props => {
+	const classes = useStyles()
+	const { state, updText, remText } = useContext(Context)
+	const { text } = state
+
+	useGetLocalStorage('text', txt => {
+		console.log('text I see is:', txt)
+		updText(txt)
+	})
+
+	useSetLocalStorage('text', text)
+
+	return (
+		<Box className={classes.root}>
+			<Typography variant="h1">Welcome!</Typography>
+			<Typography>
+				Edit <code>/pages/index.js</code> to get started
+			</Typography>
+			<Typography>{text}</Typography>
+			<Button onClick={() => updText({ text: `${text}!` })}>Add to Text</Button>
+			<Button onClick={() => remText()}>Remove Text</Button>
+			<Link href="/about">
+				<a>Go to About Page</a>
+			</Link>
+		</Box>
+	)
+}
+Index.getInitialProps = async () => {
+	// do some api calls...
+
+	// return api data
+	// this will be returned as props in the page component
+	return {}
 }
 
 export default Index
