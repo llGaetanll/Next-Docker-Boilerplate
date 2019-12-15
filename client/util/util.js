@@ -29,45 +29,51 @@ export const dockerFetch = async (container, path, properties = {}) => {
 }
 
 /**
- * Saves data to localStorage right before the page unloads
- * @param {string} name The name of the key to save to localStorage
- * @param {any} object The object to save to localStorage
+ * Runs a function on page load
+ * @param {*} callback Callback function to be run when page first loads
  */
-export const useSetLocalStorage = (name, object) => {
+export const useRunOnLoad = callback => {
 	useEffect(() => {
-		const save = () => {
-			console.log('aight im boutta head out')
-			// only run this on the client
-			if (window === undefined) return
-			localStorage.setItem(name, JSON.stringify(object))
-		}
-
-		window.addEventListener('beforeunload', save)
+		window.addEventListener('load', callback)
 		return () => {
-			window.removeEventListener('beforeunload', save)
+			window.removeEventListener('load', callback)
 		}
 	})
 }
 
 /**
- *
- * @param {string} name The name of the key to get from localStorage
- * @param {*} callback The callback when we get the object. This function is never called if the object does not exist
+ * Runs a function before page unloads
+ * @param {*} callback Callback function to be run before the page unloads
  */
-export const useGetLocalStorage = (name, callback) => {
+export const useRunBeforeUnload = callback => {
 	useEffect(() => {
-		const get = () => {
-			console.log('getting shit')
-			// only run on the client
-			if (window === undefined) return
-
-			let jsonStr = localStorage.getItem(name)
-			if (!jsonStr) return
-
-			callback(JSON.parse(jsonStr))
+		window.addEventListener('beforeunload', callback)
+		return () => {
+			window.removeEventListener('beforeunload', callback)
 		}
-
-		window.addEventListener('load', get)
-		return () => window.removeEventListener('load', get)
 	})
+}
+
+/**
+ * Saves objects to localStorage
+ * @param {string} name The name of the key to save to localStorage
+ * @param {any} object The object to save to localStorage
+ */
+export const useSetLocalStorage = (name, object) => {
+	// only run this on the client
+	if (window !== undefined) localStorage.setItem(name, JSON.stringify(object))
+}
+
+/**
+ * Gets object in localStorage
+ * @param {string} name The name of the key to get from localStorage
+ * @param {bool=} parse Whether to JSON.parse object
+ */
+export const useGetLocalStorage = (name, parse) => {
+	if (typeof window === 'undefined') return
+
+	let str = localStorage.getItem(name)
+	if (!str || !parse) return str
+
+	return JSON.parse(str)
 }

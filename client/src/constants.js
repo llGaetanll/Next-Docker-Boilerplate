@@ -12,5 +12,3 @@ export const CONTAINERS = new Map([
 ])
 
 export const DOMAIN = process.env.DOMAIN
-
-console.log('environment variable DOMAIN:', DOMAIN)

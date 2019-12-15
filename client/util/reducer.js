@@ -7,7 +7,7 @@ const useStateReducer = defState => {
 
 		switch (type) {
 			case 'UPDATE_TXT': // as you scale you would want to define those as constants but for now this is ok
-				const { text } = event // this could be whatever you want from the event
+				const { text } = event
 				return { ...state, text }
 			case 'REM_TXT':
 				return { ...state, text: null }

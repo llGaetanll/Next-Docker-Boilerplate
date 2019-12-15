@@ -1,11 +1,16 @@
 import 'isomorphic-fetch'
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useMemo } from 'react'
 import Link from 'next/link'
 import { Box, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
 import { Context } from '../util/context'
-import { useGetLocalStorage, useSetLocalStorage } from '../util/util'
+import {
+	useRunOnLoad,
+	useRunBeforeUnload,
+	useGetLocalStorage,
+	useSetLocalStorage
+} from '../util/util'
 
 const useStyles = makeStyles(theme => ({
 	root: {
@@ -23,12 +28,21 @@ const Index = props => {
 	const { state, updText, remText } = useContext(Context)
 	const { text } = state
 
-	useGetLocalStorage('text', txt => {
-		console.log('text I see is:', txt)
-		updText(txt)
+	// useRunBeforeUnload(() => {
+	// 	useSetLocalStorage('text', text)
+	// })
+
+	// updText()
+
+	useRunOnLoad(() => {
+		updText(useGetLocalStorage('text', true))
 	})
 
-	useSetLocalStorage('text', text)
+	useRunBeforeUnload(() => {
+		useSetLocalStorage('text', {
+			text: 'This text is loaded from localStorage'
+		})
+	})
 
 	return (
 		<Box className={classes.root}>

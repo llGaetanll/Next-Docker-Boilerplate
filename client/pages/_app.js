@@ -63,7 +63,7 @@ export default class MyApp extends App {
 				</Head>
 				<ThemeProvider theme={theme}>
 					<CssBaseline>
-						<Provider data={{ text: 'some ssr text' }}>
+						<Provider data={{ text: 'This text is loaded from the server' }}>
 							<Component {...pageProps} />
 						</Provider>
 					</CssBaseline>
