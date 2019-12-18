@@ -1,4 +1,4 @@
-import 'isomorphic-fetch'
+// import fetch from 'isomorphic-fetch'
 import React, { useContext, useMemo } from 'react'
 import Link from 'next/link'
 import { Box, Typography, Button } from '@material-ui/core'
@@ -44,6 +44,13 @@ const Index = props => {
 		})
 	})
 
+	const handleGetFromServer = async () => {
+		let req = await fetch('/api/test')
+		if (req.status !== 200) return
+		req = await req.json()
+		return req
+	}
+
 	return (
 		<Box className={classes.root}>
 			<Typography variant="h1">Welcome!</Typography>
@@ -53,6 +60,9 @@ const Index = props => {
 			<Typography>{text}</Typography>
 			<Button onClick={() => updText({ text: `${text}!` })}>Add to Text</Button>
 			<Button onClick={() => remText()}>Remove Text</Button>
+			<Button onClick={() => handleGetFromServer()}>
+				Get Text from Server
+			</Button>
 			<Link href="/about">
 				<a>Go to About Page</a>
 			</Link>

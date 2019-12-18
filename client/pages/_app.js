@@ -3,6 +3,8 @@ import ReactDom from 'react-dom'
 import Head from 'next/head'
 import App, { Container } from 'next/app'
 import { Provider } from '../util/context'
+import fetch from 'isomorphic-fetch'
+
 import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -11,39 +13,28 @@ import CssBaseline from '@material-ui/core/CssBaseline'
 
 export default class MyApp extends App {
 	static async getInitialProps({ Component, ctx }) {
+		let userData = { text: null }
+		try {
+			userData = await fetch('http://container1:3000/api/test') // since this fetch always runs on the server we can directly use the name of the container
+			if (userData) userData = await userData.json()
+			console.log(userData)
+		} catch (e) {
+			console.error(e)
+		}
+
 		return {
 			pageProps: {
 				// Call page-level getInitialProps
 				...(Component.getInitialProps
 					? await Component.getInitialProps(ctx)
 					: {})
-			}
+			},
+			userData
 		}
 	}
 
-	// handleSave() {
-	// 	// console.log('saving data now...', window.localStorage)
-	// 	// // only run this client side
-	// 	// if (window != undefined)
-	// 	// 	localStorage.setItem()
-	// }
-
-	// componentDidMount() {
-	// 	// for development, run axe to check warnings
-	// 	if (process.env.NODE_ENV !== 'production') {
-	// 		const axe = require('react-axe')
-	// 		axe(React, ReactDom, 1000)
-	// 	}
-
-	// 	window.addEventListener('beforeunload', this.handleSave)
-	// }
-
-	// componentWillUnmount() {
-	// 	window.removeEventListener('beforeunload', this.handleSave)
-	// }
-
 	render() {
-		const { Component, pageProps } = this.props
+		const { Component, pageProps, userData } = this.props
 
 		const theme = createMuiTheme({
 			palette: {
@@ -63,7 +54,7 @@ export default class MyApp extends App {
 				</Head>
 				<ThemeProvider theme={theme}>
 					<CssBaseline>
-						<Provider data={{ text: 'This text is loaded from the server' }}>
+						<Provider data={userData}>
 							<Component {...pageProps} />
 						</Provider>
 					</CssBaseline>
