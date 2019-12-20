@@ -1,8 +1,10 @@
 client/node_modules/
-container1/node_modules/
-
 client/static/sw.js
 client/.next
 client/out
 client/*-error.log
 client/yarn.lock
+
+
+node-server/node_modules/
+node-server/package-lock.json

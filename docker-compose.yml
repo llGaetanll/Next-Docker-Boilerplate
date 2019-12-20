@@ -1,30 +1,34 @@
-version: "3"
+version: "3.7"
 
 services:
-  client:
-    build:
-      context: ./client
-      dockerfile: ./Dockerfile
-      args:
-        PORT: ${CLIENT_EXPOSED_PORT}
-    volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
-      # - .env:/home/node/app/.env # pass in environment variables so we can acces the domain name and ports for making requests across different containers
-    env_file:
-      - .env
-    ports:
-      - ${CLIENT_EXPOSED_PORT}:${CLIENT_EXPOSED_PORT}
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #     args:
+  #       PORT: ${CLIENT_EXPOSED_PORT}
+  #   volumes:
+  #     - ./client:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #     # - .env:/home/node/app/.env # pass in environment variables so we can acces the domain name and ports for making requests across different containers
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - ${CLIENT_EXPOSED_PORT}:${CLIENT_EXPOSED_PORT}
     # depends_on:
-    #   - container1
-  container1:
+    #   - go-server
+  go-server:
+    restart: unless-stopped
     build:
-      context: ./container1
-      dockerfile: ./Dockerfile
+      context: ./go-server
+      dockerfile: Dockerfile
+      target: dev
     volumes: # me:container
-      - ./container1:/usr/src/app
+      - ./go-server:/home/go-server
     ports:
       - ${CONTAINER1_EXPOSED_PORT}:3000
+    working_dir: /home/go-server
+    command: bash -c "go mod download && make serve"
     env_file:
       - .env
   # container2:
@@ -37,3 +41,4 @@ services:
   #     - ${CONTAINER2_EXPOSED_PORT}:3000
 volumes:
   client:
+  go-server:
