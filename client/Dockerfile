@@ -1,9 +1,6 @@
 FROM node:10
 # TODO: figure out what image is best for the build
 
-ARG PORT
-ENV PORT $PORT
-
 # set workdir so that all paths moving forward are related to it
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -15,4 +12,4 @@ COPY . .
 RUN npm install
 
 # run in development
-CMD ["npm", "run", "dev", "--", "-p", "${PORT}"]
+CMD ["npm", "run", "dev"]
