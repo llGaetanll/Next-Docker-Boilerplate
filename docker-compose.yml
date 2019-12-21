@@ -7,11 +7,13 @@ services:
       dockerfile: Dockerfile
       target: dev
     volumes:
-      - ./client:/usr/src/app
-      - /usr/src/app/node_modules
+      - ./client:/usr/app
+      - /usr/app/node_modules
       # - .env:/home/node/app/.env # pass in environment variables so we can acces the domain name and ports for making requests across different containers
     env_file:
       - .env
+    depends_on:
+      - go-server
   nginx:
     restart: unless-stopped
     build: ./client/nginx
@@ -19,20 +21,20 @@ services:
       - 80:80
     depends_on: # make sure the client container starts up first
       - client
-  # go-server:
-  #   restart: unless-stopped
-  #   build:
-  #     context: ./go-server
-  #     dockerfile: Dockerfile
-  #     target: dev
-  #   volumes: # me:container
-  #     - ./go-server:/home/app/src
-  #   ports:
-  #     - ${CONTAINER1_EXPOSED_PORT}:3000
-  #   working_dir: /home/app/src
-  #   command: bash -c "go mod download && make serve"
-  #   env_file:
-  #     - .env
+  go-server:
+    restart: unless-stopped
+    build:
+      context: ./go-server
+      dockerfile: Dockerfile
+      target: dev
+    volumes: # me:container
+      - ./go-server:/home/app/src
+    ports:
+      - 3001:3000
+    working_dir: /home/app/src
+    command: bash -c "go mod download && make serve"
+    env_file:
+      - .env
   # container2:
   #   build:
   #     context: ./container2

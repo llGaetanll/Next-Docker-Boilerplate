@@ -45,7 +45,7 @@ const Index = props => {
 	})
 
 	const handleGetFromServer = async () => {
-		let req = await fetch('/api/test')
+		let req = await fetch('/api/')
 		if (req.status !== 200) return
 		req = await req.json()
 		return req

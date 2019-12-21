@@ -15,9 +15,10 @@ export default class MyApp extends App {
 	static async getInitialProps({ Component, ctx }) {
 		let userData = { text: null }
 		try {
-			userData = await fetch('http://container1:3000/api/test') // since this fetch always runs on the server we can directly use the name of the container
-			if (userData) userData = await userData.json()
+			userData = await fetch('http://go-server:3000/api/') // since this fetch always runs on the server we can directly use the name of the container
 			console.log(userData)
+			// if (userData) userData = await userData.json()
+			// console.log(userData)
 		} catch (e) {
 			console.error(e)
 		}

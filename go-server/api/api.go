@@ -1,7 +1,7 @@
 package api
 
 import (
-	"fmt"
+	"encoding/json"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -10,9 +10,17 @@ import (
 func API() {
 	r := mux.NewRouter()
 
-	fmt.Println("Hello World from API")
+	r.HandleFunc("/api", func(w http.ResponseWriter, r *http.Request) {
+		tt := struct {
+			text string
+		}{
+			"This is epic",
+		}
 
-	// TODO: protect all routes behind api key in some parameter routes
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(tt)
+	}).Methods("POST")
 
 	// Users
 	// r.HandleFunc("/api/user/account/add/{token}", user.AddAccount).Methods("POST") // add new user to database
@@ -38,6 +46,6 @@ func API() {
 	// r.HandleFunc("/api/debug/dropCollection/{collection}", debug.Drop).Methods("POST") // removes a collection from mongodb [WARNING: This action cannot be undone]
 	// r.HandleFunc("/api/debug/listCollection", debug.ListCollection).Methods("POST")    // Lists all collections
 
-	fmt.Println("Running API on port 3000") // TODO: template string this
-	http.ListenAndServe("3000", r)          // container port
+	// fmt.Println("Running API on port 3000") // TODO: template string this
+	http.ListenAndServe(":3000", r) // container port
 }
