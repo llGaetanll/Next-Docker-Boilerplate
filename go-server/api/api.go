@@ -10,6 +10,8 @@ import (
 func API() {
 	r := mux.NewRouter()
 
+	fmt.Println("Hello World from API")
+
 	// TODO: protect all routes behind api key in some parameter routes
 
 	// Users

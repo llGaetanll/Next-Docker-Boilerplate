@@ -5,6 +5,7 @@ client/out
 client/*-error.log
 client/yarn.lock
 
-
 node-server/node_modules/
 node-server/package-lock.json
+
+go-server/go.sum

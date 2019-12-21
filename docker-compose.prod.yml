@@ -1,0 +1,38 @@
+version: "3.7"
+
+services:
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      target: prod
+      args:
+        PORT: ${CLIENT_EXPOSED_PORT}
+    env_file:
+      - .env
+    ports:
+      - ${CLIENT_EXPOSED_PORT}:${CLIENT_EXPOSED_PORT}
+    depends_on:
+      - go-server
+  go-server:
+    restart: unless-stopped
+    build:
+      context: ./go-server
+      dockerfile: Dockerfile
+      target: base
+    volumes: # me:container
+      - ./go-server:/home/app/src
+    ports:
+      - ${CONTAINER1_EXPOSED_PORT}:3000
+    working_dir: /home/app/src
+    command: bash -c "go mod download && make serve"
+    env_file:
+      - .env
+  # container2:
+  #   build:
+  #     context: ./container2
+  #     dockerfile: ./Dockerfile
+  #   volumes: # me:container
+  #     - ./container2:./container2
+  #   ports:
+  #     - ${CONTAINER2_EXPOSED_PORT}:3000

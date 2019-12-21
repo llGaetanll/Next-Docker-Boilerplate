@@ -1,15 +1,17 @@
-FROM node:10
-# TODO: figure out what image is best for the build
-
-# set workdir so that all paths moving forward are related to it
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
-
-# since we have a .dockerignore, we won't be copying things like node_modules and other files not necessary to the build
-COPY . .
-
-# install deps
+FROM node:10-alpine as base
+WORKDIR /usr/app
+COPY package*.json ./
 RUN npm install
+COPY . .
+EXPOSE 3000
 
-# run in development
+# Development Environment
+FROM base as dev
 CMD ["npm", "run", "dev"]
+
+# Production Environment
+FROM base as prod
+RUN npm i --global pm2
+RUN npm run build
+USER node
+CMD [ "pm2-runtime", "npm", "--", "start" ]

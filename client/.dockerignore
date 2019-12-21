@@ -1,4 +1,5 @@
-node_modules
+node_modules/
+nginx/
 .codeclimate.yml
 .editorconfig
 .eslintrc.json
@@ -7,4 +8,4 @@ node_modules
 .travis.yml
 desktop.ini
 liscence
-now.json # removing support for `now` as we won't be using it
+now.json
