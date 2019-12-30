@@ -30,19 +30,27 @@ services:
     volumes: # me:container
       - ./go-server:/home/app/src
     ports:
-      - 3001:3000
+      - 3000:3000
     working_dir: /home/app/src
     command: bash -c "go mod download && make serve"
     env_file:
       - .env
-  # container2:
-  #   build:
-  #     context: ./container2
-  #     dockerfile: ./Dockerfile
-  #   volumes: # me:container
-  #     - ./container2:./container2
-  #   ports:
-  #     - ${CONTAINER2_EXPOSED_PORT}:3000
+    
+  mongodb:
+    image: mongo:3.4-xenial
+    restart: always
+    volumes:
+      # - mongodb:/data/mongodb # you would want to add a volume so mongo can save the database
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_ADMIN_USER: $MONGODB_ADMIN_USER
+      MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
+      MONGODB_APPLICATION_DATABASE: $MONGODB_APPLICATION_DATABASE
+      MONGODB_APPLICATION_USER: $MONGODB_APPLICATION_USER
+      MONGODB_APPLICATION_PASS: $MONGODB_APPLICATION_PASS
+
 volumes:
   client:
   go-server:
+  # mongodb:

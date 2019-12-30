@@ -12,6 +12,8 @@ import {
 	useSetLocalStorage
 } from '../util/util'
 
+import Book from '../components/book'
+
 const useStyles = makeStyles(theme => ({
 	root: {
 		display: 'flex',
@@ -23,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }))
 
-const Index = props => {
+const Index = ({ authors, ...props }) => {
 	const classes = useStyles()
 	const { state, updText, remText } = useContext(Context)
 	const { text } = state
@@ -54,18 +56,20 @@ const Index = props => {
 	return (
 		<Box className={classes.root}>
 			<Typography variant="h1">Welcome!</Typography>
-			<Typography>
-				Edit <code>/pages/index.js</code> to get started
-			</Typography>
-			<Typography>{text}</Typography>
-			<Button onClick={() => updText({ text: `${text}!` })}>Add to Text</Button>
-			<Button onClick={() => remText()}>Remove Text</Button>
-			<Button onClick={() => handleGetFromServer()}>
-				Get Text from Server
-			</Button>
-			<Link href="/about">
-				<a>Go to About Page</a>
-			</Link>
+			<Typography variant="h3">Authors</Typography>
+			<Box display="flex">
+				{authors.map(a => (
+					<Box display="flex" flexDirection="column">
+						{a.books.map(b => (
+							<Book
+								book={b.title}
+								isbn={b.isbn}
+								author={{ firstName: a.firstName, lastName: a.lastName }}
+							/>
+						))}
+					</Box>
+				))}
+			</Box>
 		</Box>
 	)
 }
@@ -74,7 +78,36 @@ Index.getInitialProps = async () => {
 
 	// return api data
 	// this will be returned as props in the page component
-	return {}
+	return {
+		authors: [
+			{
+				firstName: 'Jorge',
+				lastName: 'Gonzalez',
+				age: 19,
+				books: [
+					{
+						title: 'Book Title 1',
+						isbn: '97230498239'
+					}
+				]
+			},
+			{
+				firstName: 'Robert',
+				lastName: 'Cancio',
+				age: 19,
+				books: [
+					{
+						title: 'Book Title 2',
+						isbn: '972345998436'
+					},
+					{
+						title: 'Book Title 3',
+						isbn: '972983249849'
+					}
+				]
+			}
+		]
+	}
 }
 
 export default Index
