@@ -100,8 +100,8 @@ func (r *Resolver) CreateBook(args CreateBookArgs) (*BookResolver, error) {
 
 	col := DB.Database(src.Database).Collection("Books")
 
-	bookID := genBytes(16)
-	isbn := genBytes(16) // this is not a valid isbn but it's okay for the sake of example
+	bookID := GenID(16)
+	isbn := GenID(16) // this is not a valid isbn but it's okay for the sake of example
 
 	book := src.Book{
 		BookID: graphql.ID(bookID),
@@ -130,7 +130,7 @@ func (r *Resolver) CreateAuthor(args CreateAuthorArgs) (*AuthorResolver, error) 
 
 	col := DB.Database(src.Database).Collection("Authors")
 
-	authorID := genBytes(16)
+	authorID := GenID(16)
 
 	author := src.Author{
 		AuthorID:  graphql.ID(authorID),

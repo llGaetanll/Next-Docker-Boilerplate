@@ -1,21 +1,28 @@
 package api
 
 import (
-	"fmt"
-	"log"
-	"net/http"
+	"app/api/auth"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-gonic/gin"
 	"github.com/graph-gophers/graphql-go"
-	"github.com/graph-gophers/graphql-go/relay"
 )
 
 // Start starts the api running on port 3000
 func Start(schema *graphql.Schema) {
-	r := mux.NewRouter()
+	r := gin.Default()
 
-	r.Handle("/api", &relay.Handler{Schema: schema}).Methods("POST") // use our schema for this route
+	r.Use(sessions.Sessions("goquestsession", auth.Store))
 
-	fmt.Println("Running API on port 3000")
-	log.Fatal(http.ListenAndServe(":3000", r))
+	// use our schema for this route
+	r.POST("/api", graphqlHandler(schema))
+
+	a := r.Group("/auth")
+	a.GET("/url/:service", auth.GetURL)    // returns the url for the session
+	a.POST("/user/:service", auth.GetUser) // returnns information about the user given the token
+	// a.POST("/google", auth.AuthHandler) // returnns information about the user given the token in the headers
+
+	r.Run(":3000")
 }
+
+// aug 30 2018 tummy tuesday

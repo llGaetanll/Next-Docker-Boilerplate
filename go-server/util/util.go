@@ -2,16 +2,18 @@ package util
 
 import (
 	"crypto/rand"
-	"log"
+	"encoding/base64"
 )
 
-func genBytes(length int) []byte {
-	b := make([]byte, length)
-	_, err := rand.Read(b)
-
-	if err != nil {
-		log.Fatal(err)
-	}
+// GenBytes generates a slice of length l of random bytes
+func GenBytes(l int) []byte {
+	b := make([]byte, l)
+	rand.Read(b)
 
 	return b
+}
+
+// GenID generates random IDs
+func GenID(l int) string {
+	return base64.StdEncoding.EncodeToString(GenBytes(l))
 }
