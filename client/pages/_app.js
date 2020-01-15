@@ -9,6 +9,8 @@ import { createMuiTheme } from '@material-ui/core/styles'
 import { ThemeProvider } from '@material-ui/styles'
 import CssBaseline from '@material-ui/core/CssBaseline'
 
+import theme from '../src/theme'
+
 // export const Context = createContext('black')
 
 export default class MyApp extends App {
@@ -36,17 +38,6 @@ export default class MyApp extends App {
 
 	render() {
 		const { Component, pageProps, userData } = this.props
-
-		const theme = createMuiTheme({
-			palette: {
-				background: {
-					default: '#EEE'
-				},
-				primary: {
-					main: '#673ab7'
-				}
-			}
-		})
 
 		return (
 			<Container>
