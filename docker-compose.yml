@@ -21,6 +21,7 @@ services:
       - 80:80
     depends_on: # make sure the client container starts up first
       - client
+      - go-server
   go-server:
     restart: unless-stopped
     build:
@@ -42,12 +43,12 @@ services:
   #     - 27017:27017
   #   env_file:
   #     - .env
-    # environment:
-    #   MONGODB_ADMIN_USER: $MONGODB_ADMIN_USER
-    #   MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
-    #   MONGODB_APPLICATION_DATABASE: $MONGODB_APPLICATION_DATABASE
-    #   MONGODB_APPLICATION_USER: $MONGODB_APPLICATION_USER
-    #   MONGODB_APPLICATION_PASS: $MONGODB_APPLICATION_PASS
+  # environment:
+  #   MONGODB_ADMIN_USER: $MONGODB_ADMIN_USER
+  #   MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
+  #   MONGODB_APPLICATION_DATABASE: $MONGODB_APPLICATION_DATABASE
+  #   MONGODB_APPLICATION_USER: $MONGODB_APPLICATION_USER
+  #   MONGODB_APPLICATION_PASS: $MONGODB_APPLICATION_PASS
 volumes:
   client:
   go-server:
