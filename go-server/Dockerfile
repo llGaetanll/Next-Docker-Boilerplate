@@ -2,6 +2,7 @@ FROM golang:1.12-alpine as base
 RUN apk update && apk upgrade && \
   apk add --no-cache bash git openssh
 WORKDIR /home/app/src
+EXPOSE 3000
 
 # DEV 
 FROM base as dev 

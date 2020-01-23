@@ -29,21 +29,19 @@ services:
       target: dev
     volumes: # me:container
       - ./go-server:/home/app/src
-    ports:
-      - 3000:3000
     working_dir: /home/app/src
     command: bash -c "go mod download && make serve"
     env_file:
       - .env
-  mongodb:
-    image: mongo:3.4-xenial
-    restart: always
-    volumes:
-      - mongodb:/db
-    ports:
-      - 27017:27017
-    env_file:
-      - .env
+  # mongodb:
+  #   image: mongo:3.4-xenial
+  #   restart: always
+  #   volumes:
+  #     - mongodb:/db
+  #   ports:
+  #     - 27017:27017
+  #   env_file:
+  #     - .env
     # environment:
     #   MONGODB_ADMIN_USER: $MONGODB_ADMIN_USER
     #   MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
@@ -53,4 +51,4 @@ services:
 volumes:
   client:
   go-server:
-  mongodb:
+  # mongodb:

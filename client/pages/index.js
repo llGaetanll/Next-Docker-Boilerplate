@@ -50,6 +50,7 @@ const Index = ({ authors, ...props }) => {
 		let req = await fetch('/api/')
 		if (req.status !== 200) return
 		req = await req.json()
+		console.log(req)
 		return req
 	}
 
@@ -70,6 +71,7 @@ const Index = ({ authors, ...props }) => {
 					</Box>
 				))}
 			</Box>
+			<Button onClick={handleGetFromServer}>Send Request</Button>
 		</Box>
 	)
 }

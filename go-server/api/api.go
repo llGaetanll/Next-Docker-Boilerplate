@@ -19,7 +19,13 @@ func Start(schema *graphql.Schema) {
 	r.Use(sessions.Sessions("goquestsession", store))
 
 	// use our schema for this route
-	r.POST("/api", graphqlHandler(schema))
+	r.POST("/", graphqlHandler(schema))
+
+	r.GET("/api", func(c *gin.Context) {
+		c.JSON(200, gin.H{
+			"hello": "world",
+		})
+	})
 
 	a := r.Group("/auth")
 	a.GET("/url/:service", GetURL)    // returns the url for the session
