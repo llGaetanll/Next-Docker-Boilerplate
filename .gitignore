@@ -10,3 +10,5 @@ node-server/package-lock.json
 
 go-server/go.sum
 go-server/api/config.secret.json
+
+api/
