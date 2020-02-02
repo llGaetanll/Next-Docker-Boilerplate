@@ -12,15 +12,14 @@ services:
       # - .env:/home/node/app/.env # pass in environment variables so we can acces the domain name and ports for making requests across different containers
     env_file:
       - .env
-    depends_on:
-      - go-server
   nginx:
     restart: unless-stopped
-    build: ./client/nginx
+    build: ./nginx
     ports:
       - 80:80
     depends_on: # make sure the client container starts up first
       - client
+      - go-server
   go-server:
     restart: unless-stopped
     build:
@@ -33,6 +32,17 @@ services:
     command: bash -c "go mod download && make serve"
     env_file:
       - .env
+  api:
+    restart: unless-stopped
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: dev
+    volumes: # me:container
+      - ./api:/home/app/src
+    working_dir: /home/app/src
+    command: bash -c "go mod download && make serve"
+    
   # mongodb:
   #   image: mongo:3.4-xenial
   #   restart: always
@@ -51,4 +61,5 @@ services:
 volumes:
   client:
   go-server:
+  api:
   # mongodb:

@@ -12,3 +12,4 @@ go-server/go.sum
 go-server/api/config.secret.json
 
 api/
+.DS_Store
