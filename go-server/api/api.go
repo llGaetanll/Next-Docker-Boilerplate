@@ -13,15 +13,14 @@ import (
 func Start(schema *graphql.Schema) {
 	r := gin.Default()
 
-	fmt.Println("Helloooo")
-
 	store := cookie.NewStore([]byte("secret"))
 	r.Use(sessions.Sessions("goquestsession", store))
 
 	// use our schema for this route
 	r.POST("/", graphqlHandler(schema))
 
-	r.GET("/api", func(c *gin.Context) {
+	r.GET("/api/test", func(c *gin.Context) {
+		fmt.Println("Detected Test Request")
 		c.JSON(200, gin.H{
 			"hello": "world",
 		})

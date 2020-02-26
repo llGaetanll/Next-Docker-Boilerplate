@@ -1,6 +1,7 @@
 // import fetch from 'isomorphic-fetch'
 import React, { useContext, useMemo } from 'react'
 import Link from 'next/link'
+import fetch from 'isomorphic-fetch'
 import { Box, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
@@ -25,7 +26,7 @@ const useStyles = makeStyles(theme => ({
 	}
 }))
 
-const Index = ({ authors, ...props }) => {
+const Index = ({ authors, googleUrl, ...props }) => {
 	const classes = useStyles()
 	const { state, updText, remText } = useContext(Context)
 	const { text } = state
@@ -36,8 +37,13 @@ const Index = ({ authors, ...props }) => {
 
 	// updText()
 
-	useRunOnLoad(() => {
+	useRunOnLoad(async () => {
 		updText(useGetLocalStorage('text', true))
+
+		const apiResClient = await fetch('/api/test')
+
+		const body = await apiResClient.json()
+		console.log('apiResClient body:', body)
 	})
 
 	useRunBeforeUnload(() => {
@@ -58,6 +64,9 @@ const Index = ({ authors, ...props }) => {
 		<Box className={classes.root}>
 			<Typography variant="h1">Welcome!</Typography>
 			<Typography variant="h3">Authors</Typography>
+			<Link href={googleUrl}>
+				<a>login with google</a>
+			</Link>
 			<Box display="flex">
 				{authors.map(a => (
 					<Box display="flex" flexDirection="column">
@@ -76,8 +85,6 @@ const Index = ({ authors, ...props }) => {
 	)
 }
 Index.getInitialProps = async () => {
-	// do some api calls...
-
 	// return api data
 	// this will be returned as props in the page component
 	return {
@@ -109,6 +116,7 @@ Index.getInitialProps = async () => {
 				]
 			}
 		]
+		// googleUrl: s
 	}
 }
 

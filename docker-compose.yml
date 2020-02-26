@@ -28,38 +28,42 @@ services:
       target: dev
     volumes: # me:container
       - ./go-server:/home/app/src
+    ports:
+      - 3000:3000
     working_dir: /home/app/src
     command: bash -c "go mod download && make serve"
     env_file:
       - .env
-  api:
-    restart: unless-stopped
-    build:
-      context: ./api
-      dockerfile: Dockerfile
-      target: dev
-    volumes: # me:container
-      - ./api:/home/app/src
-    working_dir: /home/app/src
-    command: bash -c "go mod download && make serve"
-    
-  # mongodb:
-  #   image: mongo:3.4-xenial
-  #   restart: always
-  #   volumes:
-  #     - mongodb:/db
+  # api:
+  #   restart: unless-stopped
+  #   build:
+  #     context: ./api
+  #     dockerfile: Dockerfile
+  #     target: dev
   #   ports:
-  #     - 27017:27017
-  #   env_file:
-  #     - .env
-    # environment:
-    #   MONGODB_ADMIN_USER: $MONGODB_ADMIN_USER
-    #   MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
-    #   MONGODB_APPLICATION_DATABASE: $MONGODB_APPLICATION_DATABASE
-    #   MONGODB_APPLICATION_USER: $MONGODB_APPLICATION_USER
-    #   MONGODB_APPLICATION_PASS: $MONGODB_APPLICATION_PASS
+  #     - 8080:8080
+  #   volumes: # me:container
+  #     - ./api:/home/app/src
+  #   working_dir: /home/app/src
+  #   command: bash -c "go mod download && make serve"
+    
+  mongodb:
+    image: mongo:3.4-xenial
+    restart: always
+    volumes:
+      - mongodb:/db
+    ports:
+      - 27017:27017
+    env_file:
+      - .env
+    environment:
+      MONGODB_ADMIN_USER: $MONGODB_ADMIN_USER
+      MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
+      MONGODB_APPLICATION_DATABASE: $MONGODB_APPLICATION_DATABASE
+      MONGODB_APPLICATION_USER: $MONGODB_APPLICATION_USER
+      MONGODB_APPLICATION_PASS: $MONGODB_APPLICATION_PASS
 volumes:
   client:
   go-server:
-  api:
-  # mongodb:
+  # api:
+  mongodb:

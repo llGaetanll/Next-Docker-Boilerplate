@@ -20,7 +20,7 @@
 		"react-dom": "16.10.2"
 	},
 	"scripts": {
-		"dev": "next",
+		"dev": "NODE_ENV=development next",
 		"start": "next start",
 		"lint": "eslint components",
 		"build": "next build",

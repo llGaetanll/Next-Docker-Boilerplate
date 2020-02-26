@@ -1,7 +1,7 @@
 import React, { createContext } from 'react'
 import ReactDom from 'react-dom'
 import Head from 'next/head'
-import App, { Container } from 'next/app'
+import App from 'next/app'
 import { Provider } from '../util/context'
 import fetch from 'isomorphic-fetch'
 
@@ -15,12 +15,11 @@ import theme from '../src/theme'
 
 export default class MyApp extends App {
 	static async getInitialProps({ Component, ctx }) {
-		let userData = { text: null }
 		try {
-			userData = await fetch('http://go-server:3000/auth/url/google') // since this fetch always runs on the server we can directly use the name of the container
-			console.log(userData)
-			// if (userData) userData = await userData.json()
-			// console.log(userData)
+			// since this fetch always runs on the server we can directly use the name of the container
+			const apiResServer = await fetch('http://go-server:3000/api/test/')
+			const body = await apiResServer.json()
+			console.log('apiResServer body:', body)
 		} catch (e) {
 			console.error(e)
 		}
@@ -32,7 +31,7 @@ export default class MyApp extends App {
 					? await Component.getInitialProps(ctx)
 					: {})
 			},
-			userData
+			userData: {}
 		}
 	}
 
@@ -40,7 +39,7 @@ export default class MyApp extends App {
 		const { Component, pageProps, userData } = this.props
 
 		return (
-			<Container>
+			<>
 				<Head>
 					<title>Title of your App</title>
 				</Head>
@@ -51,7 +50,7 @@ export default class MyApp extends App {
 						</Provider>
 					</CssBaseline>
 				</ThemeProvider>
-			</Container>
+			</>
 		)
 	}
 }
