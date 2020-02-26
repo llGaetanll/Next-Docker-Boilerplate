@@ -31,12 +31,6 @@ const Index = ({ authors, googleUrl, ...props }) => {
 	const { state, updText, remText } = useContext(Context)
 	const { text } = state
 
-	// useRunBeforeUnload(() => {
-	// 	useSetLocalStorage('text', text)
-	// })
-
-	// updText()
-
 	useRunOnLoad(async () => {
 		updText(useGetLocalStorage('text', true))
 
@@ -52,17 +46,8 @@ const Index = ({ authors, googleUrl, ...props }) => {
 		})
 	})
 
-	const handleGetFromServer = async () => {
-		let req = await fetch('/api/')
-		if (req.status !== 200) return
-		req = await req.json()
-		console.log(req)
-		return req
-	}
-
 	return (
 		<Box className={classes.root}>
-			<Typography variant="h1">Welcome!</Typography>
 			<Typography variant="h3">Authors</Typography>
 			<Link href={googleUrl}>
 				<a>login with google</a>
@@ -80,43 +65,56 @@ const Index = ({ authors, googleUrl, ...props }) => {
 					</Box>
 				))}
 			</Box>
-			<Button onClick={handleGetFromServer}>Send Request</Button>
 		</Box>
 	)
 }
 Index.getInitialProps = async () => {
+	// get google url
+	const googleURLRes = await fetch('http://go-server:3000/auth/url/google')
+	const { url } = await googleURLRes.json()
+
+	// get authors and books
+	const bookRes = await fetch('http://go-server:3000/', {
+		method: 'POST',
+		body: `{"query": "{ authors { firstName lastName books { isbn title } } }"}`
+	})
+
+	const res = await bookRes.json()
+
+	console.log('res:', JSON.stringify(res))
 	// return api data
 	// this will be returned as props in the page component
 	return {
-		authors: [
-			{
-				firstName: 'Jorge',
-				lastName: 'Gonzalez',
-				age: 19,
-				books: [
-					{
-						title: 'Book Title 1',
-						isbn: '97230498239'
-					}
-				]
-			},
-			{
-				firstName: 'Robert',
-				lastName: 'Cancio',
-				age: 19,
-				books: [
-					{
-						title: 'Book Title 2',
-						isbn: '972345998436'
-					},
-					{
-						title: 'Book Title 3',
-						isbn: '972983249849'
-					}
-				]
-			}
-		]
-		// googleUrl: s
+		// authors: [
+		// 	{
+		// 		firstName: 'Jorge',
+		// 		lastName: 'Gonzalez',
+		// 		age: 19,
+		// 		books: [
+		// 			{
+		// 				title: 'Book Title 1',
+		// 				isbn: '97230498239'
+		// 			}
+		// 		]
+		// 	},
+		// 	{
+		// 		firstName: 'Robert',
+		// 		lastName: 'Cancio',
+		// 		age: 19,
+		// 		books: [
+		// 			{
+		// 				title: 'Book Title 2',
+		// 				isbn: '972345998436'
+		// 			},
+		// 			{
+		// 				title: 'Book Title 3',
+		// 				isbn: '972983249849'
+		// 			}
+		// 		]
+		// 	}
+		// ],
+		authors: res.data.authors,
+		googleUrl: url
 	}
 }
 

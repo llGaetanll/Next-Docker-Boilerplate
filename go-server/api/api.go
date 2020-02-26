@@ -1,8 +1,6 @@
 package api
 
 import (
-	"fmt"
-
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
@@ -20,7 +18,6 @@ func Start(schema *graphql.Schema) {
 	r.POST("/", graphqlHandler(schema))
 
 	r.GET("/api/test", func(c *gin.Context) {
-		fmt.Println("Detected Test Request")
 		c.JSON(200, gin.H{
 			"hello": "world",
 		})
