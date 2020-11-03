@@ -1,4 +1,8 @@
 # Docker Starter
+<p align="center">
+  <img src="https://i.imgur.com/VsjNFfG.png">
+</p>
+
 Docker Starter is a full stack boilerplate.
 
 ## Main Technologies
