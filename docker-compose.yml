@@ -15,6 +15,8 @@ services:
   nginx:
     restart: unless-stopped
     build: ./nginx
+    logging:
+      driver: none
     ports:
       - 80:80
     depends_on: # make sure the client container starts up first
@@ -34,18 +36,18 @@ services:
     command: bash -c "go mod download && make serve"
     env_file:
       - .env
-  # api:
-  #   restart: unless-stopped
-  #   build:
-  #     context: ./api
-  #     dockerfile: Dockerfile
-  #     target: dev
-  #   ports:
-  #     - 8080:8080
-  #   volumes: # me:container
-  #     - ./api:/home/app/src
-  #   working_dir: /home/app/src
-  #   command: bash -c "go mod download && make serve"
+  api:
+    restart: unless-stopped
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - 8080:8080
+    volumes: # me:container
+      - ./api:/home/app/src
+    working_dir: /home/app/src
+    command: bash -c "go mod download && make serve"
     
   mongodb:
     image: mongo:3.4-xenial
@@ -54,8 +56,8 @@ services:
       - mongodb:/db
     ports:
       - 27017:27017
-    env_file:
-      - .env
+    # env_file:
+    #   - .env
     environment:
       MONGODB_ADMIN_USER: $MONGODB_ADMIN_USER
       MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
@@ -65,5 +67,5 @@ services:
 volumes:
   client:
   go-server:
-  # api:
+  api:
   mongodb:

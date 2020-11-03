@@ -26,7 +26,7 @@ func Start(schema *graphql.Schema) {
 	a := r.Group("/auth")
 	a.GET("/url/:service", GetURL)    // returns the url for the session
 	a.POST("/user/:service", GetUser) // returnns information about the user given the token
-	// a.POST("/google", auth.AuthHandler) // returnns information about the user given the token in the headers
+	// a.POST("/google", auth.AuthHandler) // returns information about the user given the token in the headers
 
 	r.Run(":3000")
 }

@@ -42,7 +42,7 @@ type config struct {
 var conf *oauth2.Config
 
 func getConfig(service string) (*config, error) {
-	file, err := ioutil.ReadFile("./api/config.json")
+	file, err := ioutil.ReadFile("./api/config.secret.json")
 
 	if err != nil {
 		return nil, err
@@ -128,7 +128,8 @@ func GetUser(c *gin.Context) {
 	// get token given an authorization code
 	tok, err := conf.Exchange(context.Background(), c.Query("code"))
 	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, err)
+		c.String(http.StatusBadRequest, err.Error())
+		// c.AbortWithError(http.StatusBadRequest, err)
 		return
 	}
 

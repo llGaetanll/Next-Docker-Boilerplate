@@ -31,6 +31,8 @@ const Index = ({ authors, googleUrl, ...props }) => {
 	const { state, updText, remText } = useContext(Context)
 	const { text } = state
 
+	const addAuthor = () => {}
+
 	useRunOnLoad(async () => {
 		updText(useGetLocalStorage('text', true))
 
@@ -49,9 +51,10 @@ const Index = ({ authors, googleUrl, ...props }) => {
 	return (
 		<Box className={classes.root}>
 			<Typography variant="h3">Authors</Typography>
-			<Link href={googleUrl}>
+			<Link href={googleUrl} prefetch={false}>
 				<a>login with google</a>
 			</Link>
+			<Button onClick={addAuthor}>Add Author</Button>
 			<Box display="flex">
 				{authors.map(a => (
 					<Box display="flex" flexDirection="column">
