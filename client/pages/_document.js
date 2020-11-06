@@ -1,89 +1,55 @@
-import React from 'react'
-import Document, { Head, Main, NextScript } from 'next/document'
-import { ServerStyleSheets } from '@material-ui/styles'
+import React from "react";
+import Document, { Html, Head, Main, NextScript } from "next/document";
+import { ServerStyleSheets } from "@material-ui/styles";
+import theme from "../src/theme";
 
-const height = { height: '100vh' }
+const height = { height: "100%" };
 
-class MyDocument extends Document {
-	render() {
-		return (
-			<html lang="en-GB">
-				<Head>
-					<meta
-						name="viewport"
-						content="width=device-width, initial-scale=1.0"
-					/>
-					{/* <meta name="theme-color" content="#673ab7" /> */}
-					<meta
-						name="Description"
-						content="an example of NextJS app with 100% accessible lighthouse score"
-					/>
-					<link rel="manifest" href="static/manifest.json" />
-					<link rel="icon" href="static/img/favicon.ico" />
-					<link
-						rel="stylesheet"
-						href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-					/>
-					<style>{`
+export default class MyDocument extends Document {
+  render() {
+    return (
+      <Html style={height}>
+        <Head>
+          <meta charSet="utf-8" />
+          <meta
+            name="viewport"
+            content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
+          />
+          <meta name="theme-color" content={theme.palette.primary.main} />
+          <link
+            href="https://fonts.googleapis.com/css2?&family=Inter&family=Roboto:wght@500&display=swapfamily=Fira+Mono"
+            rel="stylesheet"
+          />
+          <style>{`
 						#__next {
-							height: 100vh;
-							display: flex;
+              height: 100%;
+              display: flex;
 						}
 					`}</style>
-				</Head>
-				<body style={height}>
-					<Main />
-					<NextScript />
-				</body>
-			</html>
-		)
-	}
+        </Head>
+        <body style={height}>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
 }
 
 MyDocument.getInitialProps = async ctx => {
-	// Resolution order
-	//
-	// On the server:
-	// 1. app.getInitialProps
-	// 2. page.getInitialProps
-	// 3. document.getInitialProps
-	// 4. app.render
-	// 5. page.render
-	// 6. document.render
-	//
-	// On the server with error:
-	// 1. document.getInitialProps
-	// 2. app.render
-	// 3. page.render
-	// 4. document.render
-	//
-	// On the client
-	// 1. app.getInitialProps
-	// 2. page.getInitialProps
-	// 3. app.render
-	// 4. page.render
+  const sheets = new ServerStyleSheets();
+  const originalRenderPage = ctx.renderPage;
 
-	// Render app and page and get the context of the page with collected side effects.
-	const sheets = new ServerStyleSheets()
-	const originalRenderPage = ctx.renderPage
+  ctx.renderPage = () =>
+    originalRenderPage({
+      enhanceApp: App => props => sheets.collect(<App {...props} />)
+    });
 
-	ctx.renderPage = () =>
-		originalRenderPage({
-			enhanceApp: App => props => sheets.collect(<App {...props} />)
-		})
+  const initialProps = await Document.getInitialProps(ctx);
 
-	const initialProps = await Document.getInitialProps(ctx)
-
-	return {
-		...initialProps,
-		// Styles fragment is rendered after the app and page rendering finish.
-		styles: [
-			<React.Fragment key="styles">
-				{initialProps.styles}
-				{sheets.getStyleElement()}
-			</React.Fragment>
-		]
-	}
-}
-
-export default MyDocument
+  return {
+    ...initialProps,
+    // Styles fragment is rendered after the app and page rendering finish.
+    styles: [...initialProps.styles, sheets.getStyleElement()]
+  };
+};

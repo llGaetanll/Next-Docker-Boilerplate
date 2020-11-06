@@ -1,45 +1,37 @@
 {
-	"name": "client",
-	"private": true,
-	"version": "3.0.0",
-	"repository": {
-		"url": "https://github.com/ooade/NextSimpleStarter"
-	},
-	"license": "MIT",
-	"eslintConfig": {
-		"extends": "react-app"
-	},
-	"dependencies": {
-		"@material-ui/core": "^4.8.0",
-		"@material-ui/icons": "^4.5.1",
-		"isomorphic-fetch": "^2.2.1",
-		"next": "^9.1.6",
-		"next-offline": "^4.0.6",
-		"react": "16.10.2",
-		"react-axe": "^3.3.0",
-		"react-dom": "16.10.2"
-	},
-	"scripts": {
-		"dev": "NODE_ENV=development next",
-		"start": "next start",
-		"lint": "eslint components",
-		"build": "next build",
-		"build:server": "NEXT_TARGET=server next build",
-		"export:server": "NEXT_TARGET=server next export",
-		"export": "npm run build:server && npm run export:server",
-		"start:static": "serve",
-		"now-build": "next build"
-	},
-	"devDependencies": {
-		"babel-eslint": "^10.0.3",
-		"eslint": "^6.7.2",
-		"eslint-config-react-app": "^5.1.0",
-		"eslint-plugin-flowtype": "^2.50.3",
-		"eslint-plugin-import": "^2.19.1",
-		"eslint-plugin-jsx-a11y": "^6.2.3",
-		"eslint-plugin-react": "^7.17.0",
-		"eslint-plugin-react-hooks": "^1.7.0",
-		"serve": "^11.2.0"
-	},
-	"proxy": "http://localhost:3001"
+  "name": "NextStarter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p $PORT"
+  },
+  "dependencies": {
+    "@apollo/react-hooks": "^3.1.5",
+    "@material-ui/core": "^4.9.10",
+    "@material-ui/icons": "^4.5.1",
+    "@material-ui/lab": "^4.0.0-alpha.49",
+    "@reduxjs/toolkit": "^1.4.0",
+    "apollo-cache-inmemory": "^1.6.6",
+    "apollo-client": "^2.6.10",
+    "apollo-link-http": "^1.5.17",
+    "formik": "^2.0.3",
+    "graphql": "14.5.8",
+    "graphql-tag": "2.10.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "next": "^9.3.5",
+    "next-compose-plugins": "^2.2.0",
+    "next-offline": "^5.0.2",
+    "next-optimized-images": "^2.5.3",
+    "react": "16.11.0",
+    "react-dom": "16.11.0",
+    "react-measure": "^2.3.0",
+    "react-number-format": "^4.3.1",
+    "react-redux": "^7.1.1",
+    "react-virtualized": "^9.21.1",
+    "react-window": "^1.8.5",
+    "webpack-dev-middleware": "^3.7.2",
+    "yup": "^0.27.0"
+  }
 }

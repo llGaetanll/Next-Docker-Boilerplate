@@ -1,56 +1,36 @@
-import React, { createContext } from 'react'
-import ReactDom from 'react-dom'
-import Head from 'next/head'
-import App from 'next/app'
-import { Provider } from '../util/context'
-import fetch from 'isomorphic-fetch'
+import React from "react";
+import Head from "next/head";
 
-import { createMuiTheme } from '@material-ui/core/styles'
-import { ThemeProvider } from '@material-ui/styles'
-import CssBaseline from '@material-ui/core/CssBaseline'
+import { Provider as StateProvider } from "react-redux";
+import { ApolloProvider } from "@apollo/react-hooks";
 
-import theme from '../src/theme'
+import { ThemeProvider } from "@material-ui/styles";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
-// export const Context = createContext('black')
+import { useApollo } from "../lib/apollo";
+import theme from "../src/theme";
+import store from "../store";
 
-export default class MyApp extends App {
-	static async getInitialProps({ Component, ctx }) {
-		try {
-			// since this fetch always runs on the server we can directly use the name of the container
-			const apiResServer = await fetch('http://go-server:3000/api/test/')
-			const body = await apiResServer.json()
-			console.log('apiResServer body:', body)
-		} catch (e) {
-			console.error(e)
-		}
+import { FeedbackProvider } from "../util/feedback";
 
-		return {
-			pageProps: {
-				// Call page-level getInitialProps
-				...(Component.getInitialProps
-					? await Component.getInitialProps(ctx)
-					: {})
-			},
-			userData: {}
-		}
-	}
+const MyApp = ({ Component, pageProps }) => {
+  const apolloClient = useApollo(pageProps.initialApolloState);
 
-	render() {
-		const { Component, pageProps, userData } = this.props
+  return (
+    <ApolloProvider client={apolloClient}>
+      <StateProvider store={store}>
+        <Head>
+          <title>Next Starter</title>
+        </Head>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <FeedbackProvider>
+            <Component {...pageProps} />
+          </FeedbackProvider>
+        </ThemeProvider>
+      </StateProvider>
+    </ApolloProvider>
+  );
+};
 
-		return (
-			<>
-				<Head>
-					<title>Title of your App</title>
-				</Head>
-				<ThemeProvider theme={theme}>
-					<CssBaseline>
-						<Provider data={userData}>
-							<Component {...pageProps} />
-						</Provider>
-					</CssBaseline>
-				</ThemeProvider>
-			</>
-		)
-	}
-}
+export default MyApp;

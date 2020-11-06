@@ -1,4 +1,4 @@
-FROM node:10-alpine as base
+FROM node:15.1.0-alpine3.10 as base
 WORKDIR /usr/app
 COPY package*.json ./
 RUN npm install
