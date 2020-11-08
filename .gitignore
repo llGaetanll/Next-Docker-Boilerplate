@@ -1,11 +1,1 @@
-client/node_modules/
-client/static/sw.js
-client/.next
-client/out
-client/*-error.log
-client/yarn.lock
-
-api/gen
-api/tmp
-
 .DS_Store
