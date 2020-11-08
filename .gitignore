@@ -5,11 +5,7 @@ client/out
 client/*-error.log
 client/yarn.lock
 
-node-server/node_modules/
-node-server/package-lock.json
+api/gen
+api/tmp
 
-go-server/go.sum
-go-server/api/config.secret.json
-
-api/
 .DS_Store

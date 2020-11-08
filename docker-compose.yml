@@ -1,54 +1,37 @@
 version: "3.7"
 
 services:
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-      target: dev
-    volumes:
-      - ./client:/usr/app
-      - /usr/app/node_modules
-      # - .env:/home/node/app/.env # pass in environment variables so we can acces the domain name and ports for making requests across different containers
-    env_file:
-      - .env
-  nginx:
-    restart: unless-stopped
-    build: ./nginx
-    logging:
-      driver: none
-    ports:
-      - 80:80
-    depends_on: # make sure the client container starts up first
-      - client
-      - go-server
-  go-server:
-    restart: unless-stopped
-    build:
-      context: ./go-server
-      dockerfile: Dockerfile
-      target: dev
-    volumes: # me:container
-      - ./go-server:/home/app/src
-    ports:
-      - 3000:3000
-    working_dir: /home/app/src
-    command: bash -c "go mod download && make serve"
-    env_file:
-      - .env
+  # client:
+  #   build:
+  #     context: ./client
+  #     dockerfile: Dockerfile
+  #     target: dev
+  #   volumes:
+  #     - ./client:/usr/app
+  #     - /usr/app/node_modules
+  #   env_file:
+  #     - .env
+  # nginx:
+  #   restart: unless-stopped
+  #   build: ./nginx
+  #   logging:
+  #     driver: none
+  #   ports:
+  #     - 80:80
+  #   depends_on: # make sure the client and apip containers start up first
+  #     - client
+  #     - api
   api:
     restart: unless-stopped
-    build:
+    build: 
       context: ./api
       dockerfile: Dockerfile
-      target: dev
+      target: dev # run dev build
     ports:
       - 8080:8080
     volumes: # me:container
       - ./api:/home/app/src
-    working_dir: /home/app/src
-    command: bash -c "go mod download && make serve"
-    
+    command: make dev
   mongodb:
     image: mongo:3.4-xenial
     restart: always
@@ -56,16 +39,11 @@ services:
       - mongodb:/db
     ports:
       - 27017:27017
-    # env_file:
-    #   - .env
-    environment:
-      MONGODB_ADMIN_USER: $MONGODB_ADMIN_USER
-      MONGODB_ADMIN_PASS: $MONGODB_ADMIN_PASS
-      MONGODB_APPLICATION_DATABASE: $MONGODB_APPLICATION_DATABASE
-      MONGODB_APPLICATION_USER: $MONGODB_APPLICATION_USER
-      MONGODB_APPLICATION_PASS: $MONGODB_APPLICATION_PASS
+    env_file:
+      - .env
 volumes:
   client:
-  go-server:
   api:
   mongodb:
+
+

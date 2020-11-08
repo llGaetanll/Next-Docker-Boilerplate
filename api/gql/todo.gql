@@ -1,0 +1,20 @@
+scalar TodoID # A specific ID to discern Users from Tracks, or Authors, etc...
+# Things you can query about a todo item
+input TodoQuery {
+  todoID: TodoID
+  title: String!
+}
+
+# Things you can modify about a todo
+input TodoInput {
+  title: String!
+  note: String
+}
+
+# you could add user fields as your app grows
+type Todo {
+  todoID: TodoID!
+  title: String!
+  note: String!
+  created: Time!
+}

@@ -1,0 +1,25 @@
+# This file is for defining queries and mutations, as well as general purpose scalars
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type Query {
+  user(userInput: UserQuery!): User!
+  todo(todoInput: TodoInput!): Todo!
+}
+
+type Mutation {
+  # Todos
+  addTodo(todoInput: TodoInput!): Todo!
+  modTodo(todoID: TodoID!, todoInput: TodoInput!): Todo!
+  remTodo(todoID: TodoID!): Todo! # returns deleted todo
+  # Users
+  addUser(userInput: UserAdd!): User!
+  modUser(userID: UserID!, userInput: UserMod!): User!
+  remUser(userID: UserID!): User! # returns deleted user
+}
+
+# this is a special scalar name which is automatically marshall to time.Time in Go
+# see: https://gqlgen.com/reference/scalars/
+scalar Time

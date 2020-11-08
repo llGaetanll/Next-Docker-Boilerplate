@@ -1,0 +1,30 @@
+scalar UserID # A specific ID to discern Users from Tracks, or Authors, etc...
+# Things you can query about a user
+input UserQuery {
+  userID: UserID
+  handle: String!
+  userName: String
+  joinTime: Time!
+}
+
+# Things you can modify about a user
+input UserMod {
+  handle: String
+  userName: String
+  admin: Boolean
+}
+
+# Things you need to add a user
+input UserAdd {
+  handle: String!
+  userName: String!
+}
+
+# you could add user fields as your app grows
+type User {
+  userID: UserID!
+  admin: Boolean!
+  userName: String!
+  handle: String!
+  joinTime: Time!
+}
