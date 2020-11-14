@@ -1,11 +1,11 @@
 package main
 
-// THIS CODE IS A STARTING POINT ONLY. IT WILL NOT BE UPDATED WITH SCHEMA CHANGES.
-
 import (
 	"context"
 	"fmt"
 	"time"
+
+	// "go.mongodb.org/mongo-driver/bson"
 
 	"github.com/llGaetanll/DockerStarter-api/db"
 	"github.com/llGaetanll/DockerStarter-api/gen"
@@ -139,7 +139,7 @@ func (r *mutationResolver) RemUser(ctx context.Context, userID string) (*gen.Use
 	return nil, nil
 }
 
-func (r *queryResolver) User(ctx context.Context, userInput gen.UserQuery) (*gen.User, error) {
+func (r *queryResolver) User(ctx context.Context, userQuery gen.UserQuery) (*gen.User, error) {
 
 	// assert that the todo is in the database
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -147,10 +147,10 @@ func (r *queryResolver) User(ctx context.Context, userInput gen.UserQuery) (*gen
 
 	// add the user to the database
 	user := db.Col(db.Users).FindOne(ctx, gen.User{
-		UserID:   *userInput.UserID,
-		Handle:   userInput.Handle,
-		UserName: *userInput.UserName,
-		JoinTime: userInput.JoinTime,
+		UserID:   *userQuery.UserID,
+		Handle:   userQuery.Handle,
+		UserName: *userQuery.UserName,
+		JoinTime: userQuery.JoinTime,
 	})
 
 	fmt.Println("found user", user)
@@ -158,23 +158,36 @@ func (r *queryResolver) User(ctx context.Context, userInput gen.UserQuery) (*gen
 	return nil, nil
 }
 
-func (r *queryResolver) Todo(ctx context.Context, todoInput gen.TodoInput) (*gen.Todo, error) {
+func (r *queryResolver) Todo(ctx context.Context, todoQuery gen.TodoQuery) (*gen.Todo, error) {
 
 	// assert that the todo is in the database
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	// get the todo from the database
-	var todo *gen.Todo
+	// var todo *gen.Todo
 
-	db.Col(db.Users).FindOne(ctx, gen.Todo{
-		Title: todoInput.Title,
-		Note:  *todoInput.Note,
-	}).Decode(todo)
+	col := db.Col(db.Todos)
 
-	fmt.Println("found todo", todo)
+	_ = col
 
-	return todo, nil
+	// err := col.FindOne(ctx, bson.M{
+		// "todoID": *todoQuery.TodoID,
+		// "title": todoQuery.Title,
+	// }).Decode(todo)
+
+	// err := col.FindOne(ctx, gen.Todo{
+		// TodoID: todoQuery.TodoID,
+		// Title:  todoQuery.Title,
+	// }).Decode(todo)
+
+	// if err != nil {
+		// log.Fatal(err)
+	// }
+
+	// fmt.Println("found todo", todo, err)
+
+	return nil, nil
 }
 
 // Mutation returns gen.MutationResolver implementation.

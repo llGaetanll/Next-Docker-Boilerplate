@@ -5,8 +5,8 @@ schema {
 }
 
 type Query {
-  user(userInput: UserQuery!): User!
-  todo(todoInput: TodoInput!): Todo!
+  user(userQuery: UserQuery!): User!
+  todo(todoQuery: TodoQuery!): Todo!
 }
 
 type Mutation {

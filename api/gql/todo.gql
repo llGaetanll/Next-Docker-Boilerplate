@@ -5,7 +5,7 @@ input TodoQuery {
   title: String!
 }
 
-# Things you can modify about a todo
+# Things you can add or modify about a todo
 input TodoInput {
   title: String!
   note: String

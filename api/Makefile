@@ -12,9 +12,9 @@ start:
 	./api
 
 # generate graphql models & bson tags for generated structs
-gen: gen/generated.go gen/models_gen.go
+gen:
 	go run github.com/99designs/gqlgen generate
-	go run hooks/bson
+	go run hooks/bson.go
 
 # remove generated files
 clean:
